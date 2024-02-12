@@ -11,10 +11,6 @@ export default function App() {
 
 interface CounterProps {}
 
-interface DateProps {
-  date: Date;
-}
-
 const Counter: React.FC<CounterProps> = () => {
   const [step, setStep] = useState<number>(0);
   const [count, setCount] = useState<number>(0);
@@ -22,16 +18,26 @@ const Counter: React.FC<CounterProps> = () => {
   const date: Date = new Date();
   date.setDate(date.getDate() + count);
 
+  const reset: React.MouseEventHandler<HTMLButtonElement> = () => {
+    setCount(0);
+    setStep(0);
+  };
+
   return (
     <div className="display">
-      <div>
-        <button onClick={() => setStep((s) => s - 1)}>-</button>
-        <span>Step:{step}</span>
-        <button onClick={() => setStep((s) => s + 1)}>+</button>
+      <div className="step">
+        <input
+          onChange={(e) => setStep(Number(e.target.value))}
+          type="range"
+          min="0"
+          max="10"
+        />
+        <span>step:{step}</span>
       </div>
       <div>
         <button onClick={() => setCount((c) => c - step)}>-</button>
-        Count:{count}
+
+        <input className="count" value={count} type="number"></input>
         <button onClick={() => setCount((c) => c + step)}>+</button>
       </div>
       <div className="date">
@@ -44,6 +50,9 @@ const Counter: React.FC<CounterProps> = () => {
         </span>
         <span>{date.toDateString()}</span>
       </div>
+      <button onClick={reset} className="reset">
+        Reset
+      </button>
     </div>
   );
 };
